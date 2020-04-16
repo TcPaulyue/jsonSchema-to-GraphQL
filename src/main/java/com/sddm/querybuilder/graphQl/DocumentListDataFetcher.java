@@ -2,8 +2,6 @@ package com.sddm.querybuilder.graphQl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Lists;
-import com.sddm.querybuilder.domain.Document;
-import com.sddm.querybuilder.domain.Status;
 import graphql.schema.DataFetcher;
 import graphql.schema.DataFetchingEnvironment;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,9 +20,12 @@ public class DocumentListDataFetcher implements DataFetcher<List<JSONObject>> {
 
     private String documentCollectionName;
 
-    @Autowired
-    private MongoTemplate mongoTemplate;
+    private final MongoTemplate mongoTemplate;
 
+    @Autowired
+    public DocumentListDataFetcher(MongoTemplate mongoTemplate){
+        this.mongoTemplate = mongoTemplate;
+    }
     public void setDocumentCollectionName(String documentCollectionName){
         this.documentCollectionName = documentCollectionName;
     }

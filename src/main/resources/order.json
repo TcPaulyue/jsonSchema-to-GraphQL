@@ -1,0 +1,79 @@
+{
+  "type": "object",
+  "title": "empty object",
+  "properties": {
+    "title": {
+      "type": "string",
+      "description": "Collection"
+    },
+    "OrderID": {
+      "type": "number"
+    },
+    "CustomerID": {
+      "type": "link",
+      "collectionName": "sddm_customers",
+      "linkType": "Single",
+      "linkTo": "Customer"
+    },
+    "EmployeeID": {
+      "type": "link",
+      "collectionName": "sddm_employees",
+      "linkType": "Single",
+      "linkTo": "Employee"
+    },
+    "OrderDate": {
+      "type": "date",
+      "format": "date"
+    },
+    "RequiredDate": {
+      "type": "date",
+      "format": "date"
+    },
+    "ShippedDate": {
+      "type": "date",
+      "format": "date"
+    },
+    "ShipVia": {
+      "type": "number"
+    },
+    "Freight": {
+      "type": "number"
+    },
+    "ShipName": {
+      "type": "string"
+    },
+    "ShipAddress": {
+      "type": "string"
+    },
+    "ShipCity": {
+      "type": "string"
+    },
+    "ShipRegion": {
+      "type": "string"
+    },
+    "ShipPostalCode": {
+      "type": "string"
+    },
+    "ShipCountry": {
+      "type": "string"
+    }
+  },
+"description": "Order",
+"required": [
+"title",
+"ShipCountry",
+"ShipPostalCode",
+"ShipRegion",
+"ShipCity",
+"ShipAddress",
+"ShipName",
+"Freight",
+"ShipVia",
+"ShippedDate",
+"RequiredDate",
+"OrderDate",
+"EmployeeID",
+"CustomerID",
+"OrderID"
+]
+}

@@ -1,0 +1,58 @@
+{
+  "type": "object",
+  "title": "empty object",
+  "properties": {
+    "title": {
+      "type": "string",
+      "description": "Collection"
+    },
+    "CustomerID": {
+      "type": "string"
+    },
+    "CompanyName": {
+      "type": "string"
+    },
+    "ContactName": {
+      "type": "string"
+    },
+    "ContactTitle": {
+      "type": "string"
+    },
+    "Address": {
+      "type": "string"
+    },
+    "City": {
+      "type": "string"
+    },
+    "Region": {
+      "type": "string"
+    },
+    "PostalCode": {
+      "type": "string"
+    },
+    "Country": {
+      "type": "string"
+    },
+    "Phone": {
+      "type": "string"
+    },
+    "Fax": {
+      "type": "string"
+    }
+  },
+  "description": "Customer",
+  "required": [
+    "title",
+    "Fax",
+    "Phone",
+    "Country",
+    "PostalCode",
+    "Region",
+    "City",
+    "Address",
+    "ContactTitle",
+    "ContactName",
+    "CompanyName",
+    "CustomerID"
+  ]
+}

@@ -1,0 +1,84 @@
+{
+  "type": "object",
+  "title": "empty object",
+  "properties": {
+    "title": {
+      "type": "string",
+      "description": "Collection"
+    },
+    "employeeID": {
+      "type": "number"
+    },
+    "lastName": {
+      "type": "string"
+    },
+    "firstName": {
+      "type": "string"
+    },
+    "titleOfCourtesy": {
+      "type": "string"
+    },
+    "birthDate": {
+      "type": "date",
+      "format": "date"
+    },
+    "hireDate": {
+      "type": "date",
+      "format": "date"
+    },
+    "address": {
+      "type": "string"
+    },
+    "city": {
+      "type": "string"
+    },
+    "region": {
+      "type": "string"
+    },
+    "postalCode": {
+      "type": "string"
+    },
+    "country": {
+      "type": "string"
+    },
+    "homePhone": {
+      "type": "string"
+    },
+    "extension": {
+      "type": "string"
+    },
+    "photo": {
+      "type": "string"
+    },
+    "notes": {
+      "type": "string"
+    },
+    "reportsTo": {
+      "type": "number"
+    },
+    "photoPath": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "title",
+    "employeeID",
+    "lastName",
+    "homePhone",
+    "country",
+    "postalCode",
+    "region",
+    "city",
+    "address",
+    "hireDate",
+    "birthDate",
+    "titleOfCourtesy",
+    "firstName",
+    "extension",
+    "photo",
+    "notes",
+    "reportsTo",
+    "photoPath"
+  ],
+  "description": "Employee"
+}

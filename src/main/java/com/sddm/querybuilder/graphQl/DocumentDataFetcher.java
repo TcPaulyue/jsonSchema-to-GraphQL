@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.Aggregation;
 import org.springframework.data.mongodb.core.aggregation.AggregationOperation;
-import org.springframework.data.mongodb.core.aggregation.AggregationResults;
 import org.springframework.data.mongodb.core.aggregation.ProjectionOperation;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.stereotype.Component;
@@ -17,18 +16,32 @@ import java.util.List;
 
 @Component
 public class DocumentDataFetcher implements DataFetcher<JSONObject> {
-    @Autowired
-    private MongoTemplate mongoTemplate;
+
+    private final MongoTemplate mongoTemplate;
 
     private String documentCollectionName;
 
-    public void setDocumentCollectionName(String documentCollectionName){
+    private String keyNameInParent;
+
+    public DocumentDataFetcher(MongoTemplate mongoTemplate){
+        this.mongoTemplate = mongoTemplate;
+    }
+    void setDocumentCollectionName(String documentCollectionName){
         this.documentCollectionName = documentCollectionName;
+    }
+
+    public void setKeyNameInParent(String keyNameInParent) {
+        this.keyNameInParent = keyNameInParent;
     }
 
     @Override
     public JSONObject get(DataFetchingEnvironment dataFetchingEnvironment) {
         String id = String.valueOf(dataFetchingEnvironment.getArguments().get("id"));
+
+        if(id.equals("null")){
+            JSONObject jsonObject = dataFetchingEnvironment.getSource();
+            id = jsonObject.getString(keyNameInParent);
+        }
         String MONGODB_ID = "_id";
         List<AggregationOperation> operations = Lists.newArrayList();
         operations.add(Aggregation.match(Criteria.where(MONGODB_ID).is(id)));

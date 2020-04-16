@@ -11,7 +11,9 @@ import graphql.language.Type;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Document(collection = "Schema")
@@ -21,10 +23,10 @@ import java.util.Map;
 public class Schema {
     @Id
     private String id;
-
     private JSONObject schemaContent;
-
     private Status status;
+
+    private List<Link> linkList = new ArrayList<>();
 
     public Schema(JSONObject schemaContent) {
         this.schemaContent = schemaContent;
@@ -43,11 +45,20 @@ public class Schema {
         HashMap<String,LinkedTreeMap> hashMap = new Gson().fromJson(properties.toString(), HashMap.class);
         hashMap.forEach((key, value1) -> {
             String typeName = value1.get("type").toString();
-            typeMap.put(key, new TypeName(adjustTypeName(typeName)));
+            if(!typeName.equals("link")) {
+                typeMap.put(key, new TypeName(adjustTypeName(typeName)));
+            }else {
+                typeName = value1.get("linkTo").toString();
+                linkList.add(new Link(key
+                        ,value1.get("collectionName").toString()
+                        ,value1.get("linkType").toString()));
+                typeMap.put(key,new TypeName(typeName));
+            }
         });
         typeMap.put("id",new TypeName("String"));
         return typeMap;
     }
+
 
     private String adjustTypeName(String str){
         switch (str) {

@@ -20,11 +20,10 @@ public class MyRuntimeWiring {
         return runtimeWiring;
     }
 
-    public void initRuntimeWiring(){
+    void initRuntimeWiring(){
         Map<String,DataFetcher> map = new LinkedHashMap<>();
         runtimeWiring.getDataFetchers().put("Query",map);
     }
-
 
     void addDataFetchers(String name, Map<String, DataFetcher> dataFetcherMap){
         runtimeWiring.getDataFetchers().put(name,dataFetcherMap);
