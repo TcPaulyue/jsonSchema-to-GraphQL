@@ -6,7 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 
-@org.springframework.data.mongodb.core.mapping.Document(collection = "sddm_orders")
+@org.springframework.data.mongodb.core.mapping.Document(collection = "sddm_embeddedOrders")
 @Data
 @AllArgsConstructor
 public class Document {

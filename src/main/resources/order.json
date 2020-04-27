@@ -1,79 +1,88 @@
 {
-  "type": "object",
-  "title": "empty object",
-  "properties": {
-    "title": {
-      "type": "string",
-      "description": "Collection"
+  "type" : "object",
+  "title" : "empty object",
+  "properties" : {
+    "title" : {
+      "type" : "string",
+      "description" : "Collection",
+      "filter": true
     },
-    "OrderID": {
-      "type": "number"
+    "OrderID" : {
+      "type" : "number",
+      "filter": true
     },
-    "CustomerID": {
-      "type": "link",
-      "collectionName": "sddm_customers",
-      "linkType": "Single",
-      "linkTo": "Customer"
+    "CustomerID" : {
+      "type" : "string",
+      "filter": true
     },
-    "EmployeeID": {
-      "type": "link",
-      "collectionName": "sddm_employees",
-      "linkType": "Single",
-      "linkTo": "Employee"
+    "EmployeeID" : {
+      "type" : "number",
+      "filter": true
     },
-    "OrderDate": {
-      "type": "date",
-      "format": "date"
+    "OrderDate" : {
+      "type" : "date",
+      "format" : "date",
+      "filter": true
     },
-    "RequiredDate": {
-      "type": "date",
-      "format": "date"
+    "RequiredDate" : {
+      "type" : "date",
+      "format" : "date",
+      "filter": true
     },
-    "ShippedDate": {
-      "type": "date",
-      "format": "date"
+    "ShippedDate" : {
+      "type" : "date",
+      "format" : "date",
+      "filter": true
     },
-    "ShipVia": {
-      "type": "number"
+    "ShipVia" : {
+      "type" : "number",
+      "filter": true
     },
-    "Freight": {
-      "type": "number"
+    "Freight" : {
+      "type" : "number",
+      "filter": true
     },
-    "ShipName": {
-      "type": "string"
+    "ShipName" : {
+      "type" : "string",
+      "filter": true
     },
-    "ShipAddress": {
-      "type": "string"
+    "ShipAddress" : {
+      "type" : "string",
+      "filter": true
     },
-    "ShipCity": {
-      "type": "string"
+    "ShipCity" : {
+      "type" : "string",
+      "filter": true
     },
-    "ShipRegion": {
-      "type": "string"
+    "ShipRegion" : {
+      "type" : "string",
+      "filter": true
     },
-    "ShipPostalCode": {
-      "type": "string"
+    "ShipPostalCode" : {
+      "type" : "string",
+      "filter": true
     },
-    "ShipCountry": {
-      "type": "string"
+    "ShipCountry" : {
+      "type" : "string",
+      "filter": true
     }
   },
-"description": "Order",
-"required": [
-"title",
-"ShipCountry",
-"ShipPostalCode",
-"ShipRegion",
-"ShipCity",
-"ShipAddress",
-"ShipName",
-"Freight",
-"ShipVia",
-"ShippedDate",
-"RequiredDate",
-"OrderDate",
-"EmployeeID",
-"CustomerID",
-"OrderID"
-]
+  "description" : "Order",
+  "required" : [
+    "title",
+    "ShipCountry",
+    "ShipPostalCode",
+    "ShipRegion",
+    "ShipCity",
+    "ShipAddress",
+    "ShipName",
+    "Freight",
+    "ShipVia",
+    "ShippedDate",
+    "RequiredDate",
+    "OrderDate",
+    "EmployeeID",
+    "CustomerID",
+    "OrderID"
+  ]
 }

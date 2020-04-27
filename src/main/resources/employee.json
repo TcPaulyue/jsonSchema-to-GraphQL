@@ -4,60 +4,78 @@
   "properties": {
     "title": {
       "type": "string",
-      "description": "Collection"
+      "description": "Collection",
+      "filter": true
     },
     "employeeID": {
-      "type": "number"
+      "type": "number",
+      "filter": true
     },
     "lastName": {
-      "type": "string"
+      "type": "string",
+      "filter": true
     },
     "firstName": {
-      "type": "string"
+      "type": "string",
+      "filter": true
     },
     "titleOfCourtesy": {
-      "type": "string"
+      "type": "string",
+      "filter": true
     },
     "birthDate": {
       "type": "date",
-      "format": "date"
+      "format": "date",
+      "filter": true
     },
     "hireDate": {
       "type": "date",
-      "format": "date"
+      "format": "date",
+      "filter": true
     },
     "address": {
-      "type": "string"
+      "type": "string",
+      "filter": true
     },
     "city": {
-      "type": "string"
+      "type": "string",
+      "filter": true
     },
     "region": {
-      "type": "string"
+      "type": "string",
+      "filter": false
     },
     "postalCode": {
-      "type": "string"
+      "type": "string",
+      "filter": false
     },
     "country": {
-      "type": "string"
+      "type": "string",
+      "filter": false
     },
     "homePhone": {
-      "type": "string"
+      "type": "string",
+      "filter": false
     },
     "extension": {
-      "type": "string"
+      "type": "string",
+      "filter": false
     },
     "photo": {
-      "type": "string"
+      "type": "string",
+      "filter": false
     },
     "notes": {
-      "type": "string"
+      "type": "string",
+      "filter": false
     },
     "reportsTo": {
-      "type": "number"
+      "type": "number",
+      "filter": false
     },
     "photoPath": {
-      "type": "string"
+      "type": "string",
+      "filter": false
     }
   },
   "required": [

@@ -1,12 +1,11 @@
 package com.sddm.querybuilder.graphQl;
 
-import com.mongodb.MongoClient;
+
+import com.sddm.querybuilder.domain.Link;
 import com.sddm.querybuilder.domain.Schema;
 import com.sddm.querybuilder.repository.SchemaRepository;
 import graphql.GraphQL;
-import graphql.language.InputValueDefinition;
-import graphql.language.ListType;
-import graphql.language.TypeName;
+import graphql.language.*;
 import graphql.schema.DataFetcher;
 import graphql.schema.GraphQLSchema;
 import graphql.schema.idl.SchemaGenerator;
@@ -30,6 +29,7 @@ public class GraphQlBuilder {
 
     @Autowired
     private MongoTemplate mongoTemplate;
+
     @Autowired
     GraphQlBuilder(MyTypeRegistry myTypeRegistry
             , MyRuntimeWiring myRuntimeWiring
@@ -47,36 +47,79 @@ public class GraphQlBuilder {
         myRuntimeWiring.initRuntimeWiring();
 //        schemaRepository.findAll().forEach(this::addNewTypeAndDataFetcherInGraphQl);
 
-        Schema schema = schemaRepository.findById("5df1ed8d7a47184df89fde63").get();
+        Schema schema = schemaRepository.findById("5ea393a23541b77e6d0052b7").get();
         this.addNewTypeAndDataFetcherInGraphQl(schema);
         schema = schemaRepository.findById("5df1ee417a47184df89fde67").get();
         this.addNewTypeAndDataFetcherInGraphQl(schema);
         schema = schemaRepository.findById("5df1eedb7a47184df89fde6a").get();
         this.addNewTypeAndDataFetcherInGraphQl(schema);
+
         GraphQLSchema graphQLSchema = new SchemaGenerator().makeExecutableSchema(myTypeRegistry.getTypeDefinitionRegistry(), myRuntimeWiring.getRuntimeWiring());
         return  newGraphQL(graphQLSchema).build();
     }
 
-    public GraphQL updateGraphQl(Schema schema){
+    public Map<String, TypeDefinition> getTypeDefinitionsInGraphQl(){
+        return myTypeRegistry.getFieldDefinitionsInMyTypeRegistry();
+    }
+
+    public GraphQL addTypeInGraphQl(Schema schema){
         this.addNewTypeAndDataFetcherInGraphQl(schema);
         GraphQLSchema graphQLSchema = new SchemaGenerator().makeExecutableSchema(myTypeRegistry.getTypeDefinitionRegistry(), myRuntimeWiring.getRuntimeWiring());
         return  newGraphQL(graphQLSchema).build();
     }
 
+    public GraphQL updateTypeInGraphQl(Schema schema){
+        this.updateTypeAndDataFetcherInGraphQl(schema);
+        GraphQLSchema graphQLSchema = new SchemaGenerator().makeExecutableSchema(myTypeRegistry.getTypeDefinitionRegistry(), myRuntimeWiring.getRuntimeWiring());
+        return  newGraphQL(graphQLSchema).build();
+    }
+
+    public GraphQL deleteTypeInGraphQl(Schema schema){
+        this.deleteTypeAndDataFetcherInGraphQl(schema);
+        this.deleteTypeAndDataFetcherInGraphQl(schema);
+        GraphQLSchema graphQLSchema = new SchemaGenerator().makeExecutableSchema(myTypeRegistry.getTypeDefinitionRegistry(), myRuntimeWiring.getRuntimeWiring());
+        return  newGraphQL(graphQLSchema).build();
+    }
+
+    private void updateTypeAndDataFetcherInGraphQl(Schema schema){
+        myTypeRegistry.updateFieldDefinitions(schema.getDocumentTypeName(),schema.getTypeMap());
+        if(!schema.getLinkList().isEmpty()){
+            myRuntimeWiring.updateDataFetcherByName(schema.getDocumentTypeName(),addDataFetchers(schema.getLinkList()));
+        }else myRuntimeWiring.deleteDataFetcherByName(schema.getDocumentTypeName());
+    }
+
+    private void deleteTypeAndDataFetcherInGraphQl(Schema schema){
+        //delete orderDocumentList in Query
+        myTypeRegistry.deleteFieldDefinitionsInQueryType(schema.getSchemaTypeListName());
+        //delete orderDocument in Query
+        myTypeRegistry.deleteFieldDefinitionsInQueryType(schema.getSchemaTypeName());
+        //delete orderDocument
+        myTypeRegistry.deleteTypeDefinition(schema.getDocumentTypeName());
+
+        myRuntimeWiring.deleteEntryInQueryDataFetcher(schema.getSchemaTypeListName());
+
+        myRuntimeWiring.deleteEntryInQueryDataFetcher(schema.getSchemaTypeName());
+
+        myRuntimeWiring.deleteDataFetcherByName(schema.getDocumentTypeName());
+    }
 
     private void addNewTypeAndDataFetcherInGraphQl(Schema schema){
-
         //Type orderDocument{...}
         myTypeRegistry.addTypeDefinition(schema.getDocumentTypeName(),schema.getTypeMap());
 
         List<InputValueDefinition> inputValueDefinitions = new ArrayList<>();
         inputValueDefinitions.add(new InputValueDefinition("id",new TypeName("String")));
-
         //orderDocument(id:String):OrderDocument
         myTypeRegistry.addFieldDefinitionsInQueryType(schema.getSchemaTypeName(),new TypeName(schema.getDocumentTypeName()),inputValueDefinitions);
 
+
+        //input filter Type in Type
+        myTypeRegistry.addInputObjectTypeDefinition(schema.getFilterTypeName(), schema.getFilterMap());
+
         //orderDocumentList:[OrderDocument]
-        myTypeRegistry.addFieldDefinitionsInQueryType(schema.getSchemaTypeListName(),new ListType(new TypeName(schema.getDocumentTypeName())));
+        inputValueDefinitions = new ArrayList<>();
+        inputValueDefinitions.add(new InputValueDefinition("filter",new TypeName(schema.getFilterTypeName())));
+        myTypeRegistry.addFieldDefinitionsInQueryType(schema.getSchemaTypeListName(),new ListType(new TypeName(schema.getDocumentTypeName())),inputValueDefinitions);
 
         //orderDocumentList ==> documentListDataFetcher
         DocumentListDataFetcher documentListDataFetcher = new DocumentListDataFetcher(this.mongoTemplate);
@@ -90,14 +133,25 @@ public class GraphQlBuilder {
 
         //embedded Type in Type
         if(!schema.getLinkList().isEmpty()){
-            Map<String, DataFetcher> dataFetcherMap = new HashMap<>();
-            schema.getLinkList().forEach(item->{
-                DocumentDataFetcher documentDataFetcher1 = new DocumentDataFetcher(this.mongoTemplate);
-                documentDataFetcher1.setDocumentCollectionName(item.getCollectionName());
-                documentDataFetcher1.setKeyNameInParent(item.getName());
-                dataFetcherMap.put(item.getName(),documentDataFetcher1);
-            });
-            myRuntimeWiring.addDataFetchers(schema.getDocumentTypeName(),dataFetcherMap);
+            myRuntimeWiring.addDataFetchers(schema.getDocumentTypeName(),addDataFetchers(schema.getLinkList()));
         }
+    }
+
+    private Map<String,DataFetcher> addDataFetchers(List<Link> linkList){
+        Map<String,DataFetcher> dataFetcherMap = new HashMap<>();
+        linkList.forEach(link -> {
+            if(link.getLinkType().equals("Link")){
+                DocumentDataFetcher documentDataFetcher1 = new DocumentDataFetcher(this.mongoTemplate);
+                documentDataFetcher1.setDocumentCollectionName(link.getCollectionName());
+                documentDataFetcher1.setKeyNameInParent(link.getName());
+                dataFetcherMap.put(link.getName(),documentDataFetcher1);
+            }else if(link.getLinkType().equals("LinkList")){
+                DocumentListDataFetcher documentListDataFetcher1 = new DocumentListDataFetcher(this.mongoTemplate);
+                documentListDataFetcher1.setDocumentCollectionName(link.getCollectionName());
+                documentListDataFetcher1.setKeyNameInParent(link.getName());
+                dataFetcherMap.put(link.getName(),documentListDataFetcher1);
+            }
+        });
+        return dataFetcherMap;
     }
 }

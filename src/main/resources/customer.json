@@ -4,40 +4,52 @@
   "properties": {
     "title": {
       "type": "string",
-      "description": "Collection"
+      "description": "Collection",
+      "filter": true
     },
     "CustomerID": {
-      "type": "string"
+      "type": "string",
+      "filter": true
     },
     "CompanyName": {
-      "type": "string"
+      "type": "string",
+      "filter": true
     },
     "ContactName": {
-      "type": "string"
+      "type": "string",
+      "filter": true
     },
     "ContactTitle": {
-      "type": "string"
+      "type": "string",
+      "filter": true
     },
     "Address": {
-      "type": "string"
+      "type": "string",
+      "filter": true
     },
     "City": {
-      "type": "string"
+      "type": "string",
+      "filter": true
     },
     "Region": {
-      "type": "string"
+      "type": "string",
+      "filter": true
     },
     "PostalCode": {
-      "type": "string"
+      "type": "string",
+      "filter": true
     },
     "Country": {
-      "type": "string"
+      "type": "string",
+      "filter": true
     },
     "Phone": {
-      "type": "string"
+      "type": "string",
+      "filter": true
     },
     "Fax": {
-      "type": "string"
+      "type": "string",
+      "filter": false
     }
   },
   "description": "Customer",

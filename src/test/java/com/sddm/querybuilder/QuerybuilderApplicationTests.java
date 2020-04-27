@@ -5,14 +5,15 @@ import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Lists;
 import com.sddm.querybuilder.domain.Document;
 import com.sddm.querybuilder.domain.Schema;
+import com.sddm.querybuilder.domain.Status;
 import com.sddm.querybuilder.repository.DocumentRepository;
 import com.sddm.querybuilder.repository.SchemaRepository;
+import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.Aggregation;
 import org.springframework.data.mongodb.core.aggregation.AggregationOperation;
@@ -22,7 +23,6 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.test.context.junit4.SpringRunner;
 import graphql.language.Type;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -54,8 +54,15 @@ class QuerybuilderApplicationTests {
         ProjectionOperation projectionOperation = Aggregation.project("data");
         List<AggregationOperation> operations = Lists.newArrayList();
         operations.add(projectionOperation);
+//        operations.add(Aggregation.match(Criteria.where("data.ContactName").is("Thomas Hardy")));
+//        operations.add(Aggregation.match(Criteria.where("data.CompanyName").is("Around the Horn")));
+        List<Criteria> criteriaList = new ArrayList<>();
+        criteriaList.add(Criteria.where("data.City").is("London"));
+        criteriaList.add(Criteria.where("data.ContactName").is("Thomas Hardy"));
+        Criteria[] criteria = criteriaList.toArray(new Criteria[criteriaList.size()]);
+        operations.add(Aggregation.match(new Criteria().orOperator(criteria)));
         Aggregation aggregation = Aggregation.newAggregation(operations);
-        AggregationResults<JSONObject> contractAggregationResults = mongoTemplate.aggregate(aggregation, "sddm_orders", JSONObject.class);
+        AggregationResults<JSONObject> contractAggregationResults = mongoTemplate.aggregate(aggregation, "sddm_customers", JSONObject.class);
         List<JSONObject> documents = contractAggregationResults.getMappedResults();
         List<JSONObject> results = new ArrayList<>();
         for (JSONObject document : documents){
@@ -91,6 +98,10 @@ class QuerybuilderApplicationTests {
         JSONObject json = JSON.parseObject(jsonTxt);
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("schema",json);
+//        Schema schema = new Schema();
+//        schema.setSchemaContent(jsonObject);
+//        schema.setStatus(Status.Created);
+//        schemaRepository.save(schema);
         Schema schema = schemaRepository.findById("5df1ed8d7a47184df89fde63").get();
         schema.setSchemaContent(jsonObject);
         schemaRepository.save(schema);
@@ -105,6 +116,17 @@ class QuerybuilderApplicationTests {
         jsonObject.put("CustomerID","5df1f62917e609bb64d920d3");
         jsonObject.put("EmployeeID","5df1f62f17e609bb64d92140");
         document.setData(jsonObject);
+        documentRepository.save(document);
+    }
+
+    @Test
+    public void createEmbeddedOrderDocument() throws IOException {
+        InputStream is = new FileInputStream("/Users/congtang/Desktop/sddm-backend/sddm-querybuilder/src/main/resources/orderDocument.json");
+        String jsonTxt = IOUtils.toString(is, "UTF-8");
+        System.out.println(jsonTxt);
+        JSONObject json = JSON.parseObject(jsonTxt);
+        Document document = documentRepository.findById("5ea39637af36a0436297ed49").get();
+        document.setData(json);
         documentRepository.save(document);
     }
 

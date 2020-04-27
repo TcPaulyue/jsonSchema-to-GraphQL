@@ -29,8 +29,19 @@ public class MyRuntimeWiring {
         runtimeWiring.getDataFetchers().put(name,dataFetcherMap);
     }
 
-    public void addNewEntryInQueryDataFetcher(String name,DataFetcher dataFetcher){
+    void addNewEntryInQueryDataFetcher(String name, DataFetcher dataFetcher){
         runtimeWiring.getDataFetchers().get("Query").put(name,dataFetcher);
     }
 
+    void deleteEntryInQueryDataFetcher(String name){
+        runtimeWiring.getDataFetchers().get("Query").remove(name);
+    }
+
+    void deleteDataFetcherByName(String name){
+        runtimeWiring.getDataFetchers().remove(name);
+    }
+
+    void updateDataFetcherByName(String name,Map<String, DataFetcher> dataFetcherMap){
+        runtimeWiring.getDataFetchers().put(name,dataFetcherMap);
+    }
 }
