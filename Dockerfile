@@ -5,6 +5,7 @@ COPY pom.xml /workspace
 COPY src /workspace/src
 RUN apk add --no-cache maven
 RUN mvn -B -f pom.xml clean package -DskipTests
-COPY --from=build /workspace/target/*.jar app.jar
+ADD /workspace/target/*.jar app.jar
+RUN touch /app.jar
 EXPOSE 8080
 ENTRYPOINT ["java","-jar","/app.jar"]
