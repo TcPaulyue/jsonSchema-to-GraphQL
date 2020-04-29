@@ -1,4 +1,4 @@
-FROM openjdk:8-jre-alpine
+FROM openjdk:8-jdk-alpine
 RUN mkdir -p /workspace
 WORKDIR /workspace
 COPY pom.xml /workspace
