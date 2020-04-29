@@ -8,7 +8,7 @@ import com.sddm.querybuilder.domain.Schema;
 import com.sddm.querybuilder.domain.Status;
 import com.sddm.querybuilder.repository.DocumentRepository;
 import com.sddm.querybuilder.repository.SchemaRepository;
-import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
+//import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
