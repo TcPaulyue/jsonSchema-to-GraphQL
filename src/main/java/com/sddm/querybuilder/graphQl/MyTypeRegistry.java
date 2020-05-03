@@ -30,12 +30,16 @@ public class MyTypeRegistry {
     void initTypeDefinition(){
         Map<String, Type> typeMap = new HashMap<>();
         typeDefinitionRegistry.add(newObjectTypeDefinition("Query",newFieldDefinitions(typeMap)));
-    }
+
+        Map<String, Type> deleteTypeMap = new HashMap<>();
+        deleteTypeMap.put("deleteResult",new TypeName("String"));
+        typeDefinitionRegistry.add(newObjectTypeDefinition("DeleteResult",newFieldDefinitions(deleteTypeMap)));
+ }
 
     void addInputObjectTypeDefinition(String name,Map<String,Type> typeMap){
         InputObjectTypeDefinition inputObjectTypeDefinition = new InputObjectTypeDefinition(name);
-        inputObjectTypeDefinition.getInputValueDefinitions().add(new InputValueDefinition("OR",new ListType(new TypeName(name))));
-        inputObjectTypeDefinition.getInputValueDefinitions().add(new InputValueDefinition("AND",new ListType(new TypeName(name))));
+//        inputObjectTypeDefinition.getInputValueDefinitions().add(new InputValueDefinition("OR",new ListType(new TypeName(name))));
+//        inputObjectTypeDefinition.getInputValueDefinitions().add(new InputValueDefinition("AND",new ListType(new TypeName(name))));
         typeMap.forEach((key,value)-> inputObjectTypeDefinition.getInputValueDefinitions().add(new InputValueDefinition(key,value)));
         typeDefinitionRegistry.add(inputObjectTypeDefinition);
     }

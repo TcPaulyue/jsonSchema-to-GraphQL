@@ -43,7 +43,7 @@ public class DocumentListDataFetcher implements DataFetcher<List<JSONObject>> {
         return this.getDocumentsByAggregation(filters);
    }
 
-   public List<JSONObject> getDocumentsByLinkList(List<String> ids){
+   private List<JSONObject> getDocumentsByLinkList(List<String> ids){
         List<JSONObject> results = new ArrayList<>();
         for(String id: ids){
             List<AggregationOperation> operations = Lists.newArrayList();
