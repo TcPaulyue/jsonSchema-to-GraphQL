@@ -23,21 +23,21 @@ filter=true表示可以作为查询时的筛选条件，filter=false则不可以
 
 #### Link
 
-```json
+```shell
 ###schema Type = A 
 "B": {    
-        "linkTo" :"B"   A链接的schema Type为B
-        "collectionName": "sddm_customers",  对应的collectionName
-        "type" : "Link",   link类型表示单个文档的链接操作
-        "filter": false   不可作为筛选对象
+        "linkTo" :"B"   //A链接的schema Type为B
+        "collectionName": "sddm_customers",  //对应的collectionName
+        "type" : "Link",   //link类型表示单个文档的链接操作
+        "filter": false   //不可作为筛选对象
     },
 ```
 
 #### LinkList
 
-```json
+```shell
 ###schema Type = A 
-"B": {    //
+"B": {    
         "linkTo" :"B"   //A链接的schema Type为B
         "collectionName": "sddm_customers",  //对应的collectionName
         "type" : "LinkList",   //link类型表示单个文档的链接操作
@@ -47,7 +47,7 @@ filter=true表示可以作为查询时的筛选条件，filter=false则不可以
 
 #### Embedded
 
-```json
+```shell
     "B": {
       "type": "Embedded",  //内嵌文档
       "typeName":"B",   //内嵌文档的类型
@@ -57,7 +57,7 @@ filter=true表示可以作为查询时的筛选条件，filter=false则不可以
 
 #### EmbeddedList
 
-```json
+```shell
     "BList": {
       "type": "EmbeddedList",  //内嵌文档
       "typeName":"B",   //内嵌文档的类型
