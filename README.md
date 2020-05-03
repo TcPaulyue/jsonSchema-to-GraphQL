@@ -14,7 +14,7 @@ Json-schema的定义遵循基本的规范，有如下的一些说明：
 #### 基本类型
 
 filter=true表示可以作为查询时的筛选条件，filter=false则不可以
-```json
+```shell
    "XXX": {
       "type": "number","string","date"
       "filter": true 
