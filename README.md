@@ -13,10 +13,11 @@ Json-schema的定义遵循基本的规范，有如下的一些说明：
 
 #### 基本类型
 
+filter=true表示可以作为查询时的筛选条件，filter=false则不可以
 ```json
    "XXX": {
       "type": "number","string","date"
-      "filter": true //filter=true表示可以作为查询时的筛选条件，filter=false则不可以
+      "filter": true 
     }
 ```
 
@@ -24,11 +25,11 @@ Json-schema的定义遵循基本的规范，有如下的一些说明：
 
 ```json
 ###schema Type = A 
-"B": {    //
-        "linkTo" :"B"   //A链接的schema Type为B
-        "collectionName" : "sddm_customers",  //对应的collectionName
-        "type" : "Link",   //link类型表示单个文档的链接操作
-        "filter": false   //不可作为筛选对象
+"B": {    
+        "linkTo" :"B"   A链接的schema Type为B
+        "collectionName": "sddm_customers",  对应的collectionName
+        "type" : "Link",   link类型表示单个文档的链接操作
+        "filter": false   不可作为筛选对象
     },
 ```
 
@@ -38,7 +39,7 @@ Json-schema的定义遵循基本的规范，有如下的一些说明：
 ###schema Type = A 
 "B": {    //
         "linkTo" :"B"   //A链接的schema Type为B
-        "collectionName" : "sddm_customers",  //对应的collectionName
+        "collectionName": "sddm_customers",  //对应的collectionName
         "type" : "LinkList",   //link类型表示单个文档的链接操作
         "filter": false   //不可作为筛选对象
     },
