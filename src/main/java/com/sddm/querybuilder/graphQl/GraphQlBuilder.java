@@ -3,6 +3,7 @@ package com.sddm.querybuilder.graphQl;
 
 import com.sddm.querybuilder.domain.Link;
 import com.sddm.querybuilder.domain.Schema;
+import com.sddm.querybuilder.domain.Status;
 import com.sddm.querybuilder.repository.SchemaRepository;
 import graphql.GraphQL;
 import graphql.language.*;
@@ -48,13 +49,16 @@ public class GraphQlBuilder {
         myTypeRegistry.initSchemaDefinition();
         myTypeRegistry.initTypeDefinition();
         myRuntimeWiring.initRuntimeWiring();
-
-        Schema schema = schemaRepository.findById("5ea393a23541b77e6d0052b7").get();
-        this.addNewTypeAndDataFetcherInGraphQl(schema);
-        schema = schemaRepository.findById("5df1ee417a47184df89fde67").get();
-        this.addNewTypeAndDataFetcherInGraphQl(schema);
-        schema = schemaRepository.findById("5df1eedb7a47184df89fde6a").get();
-        this.addNewTypeAndDataFetcherInGraphQl(schema);
+        List<Schema> schemaList = schemaRepository.findAllByStatus(Status.Created);
+        for(Schema schema:schemaList){
+            this.addNewTypeAndDataFetcherInGraphQl(schema);
+        }
+//        Schema schema = schemaRepository.findById("5ea393a23541b77e6d0052b7").get();
+//        this.addNewTypeAndDataFetcherInGraphQl(schema);
+//        schema = schemaRepository.findById("5df1ee417a47184df89fde67").get();
+//        this.addNewTypeAndDataFetcherInGraphQl(schema);
+//        schema = schemaRepository.findById("5df1eedb7a47184df89fde6a").get();
+//        this.addNewTypeAndDataFetcherInGraphQl(schema);
 
         GraphQLSchema graphQLSchema = new SchemaGenerator().makeExecutableSchema(myTypeRegistry.getTypeDefinitionRegistry(), myRuntimeWiring.getRuntimeWiring());
         return  newGraphQL(graphQLSchema).build();
