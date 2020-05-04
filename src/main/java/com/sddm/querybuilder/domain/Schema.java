@@ -128,6 +128,8 @@ public class Schema {
                 typeMap.put(key, new TypeName(adjustTypeName(typeName)));
         });
         typeMap.put("id",new TypeName("String"));
+        typeMap.put("OR",new ListType(new TypeName(this.getFilterTypeName(this.getSchemaTypeName()))));
+        typeMap.put("AND",new ListType(new TypeName(this.getFilterTypeName(this.getSchemaTypeName()))));
         return typeMap;
     }
 
@@ -148,16 +150,14 @@ public class Schema {
     public String getDocumentTypeName(){
         return schemaContent.getJSONObject("schema").getString("description");
     }
-
-    //sddm_orders
-    public String getDocumentCollectionName(String name){
-        return "sddm_"+name+"s";
-    }
-
     //order
     public String getSchemaTypeName(){
         String str = schemaContent.getJSONObject("schema").getString("description");
         return lowerCase(str);
+    }
+    //sddm_orders
+    public String getDocumentCollectionName(String name){
+        return "sddm_"+name+"s";
     }
 
     //orderDocuments

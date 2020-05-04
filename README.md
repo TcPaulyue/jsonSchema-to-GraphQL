@@ -144,6 +144,11 @@ filter=true表示可以作为查询时的筛选条件，filter=false则不可以
 //查询整个order文档列表
 {
 	orderDocuments(filter:{
+	    AND/OR:[
+	    {OrderID: "XXX},
+	    {OrderDate: "XXXX"},
+	    ...
+	    ],
 		OrderID: "XXX",
 		...
 	}){

@@ -1,6 +1,5 @@
 package com.sddm.querybuilder.graphQl;
 
-
 import com.sddm.querybuilder.domain.Link;
 import com.sddm.querybuilder.domain.Schema;
 import com.sddm.querybuilder.domain.Status;
@@ -11,6 +10,8 @@ import graphql.schema.DataFetcher;
 import graphql.schema.GraphQLSchema;
 import graphql.schema.idl.SchemaGenerator;
 import org.javers.core.Javers;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Component;
@@ -25,6 +26,7 @@ import static graphql.GraphQL.newGraphQL;
 
 @Component
 public class GraphQlBuilder {
+    private static final Logger logger = LoggerFactory.getLogger(GraphQlBuilder.class);
     private MyTypeRegistry myTypeRegistry;
     private MyRuntimeWiring myRuntimeWiring;
     private SchemaRepository schemaRepository;
@@ -51,6 +53,7 @@ public class GraphQlBuilder {
         myRuntimeWiring.initRuntimeWiring();
         List<Schema> schemaList = schemaRepository.findAllByStatus(Status.Created);
         for(Schema schema:schemaList){
+            logger.info("add schema existed in mongodb "+schema.getId());
             this.addNewTypeAndDataFetcherInGraphQl(schema);
         }
 //        Schema schema = schemaRepository.findById("5ea393a23541b77e6d0052b7").get();
@@ -126,6 +129,7 @@ public class GraphQlBuilder {
     }
 
     private void addNewTypeAndDataFetcherInGraphQl(Schema schema){
+        //order
         String schemaName = schema.getSchemaTypeName();
         //Type orderDocument{...}
         myTypeRegistry.addTypeDefinition(schema.getDocumentTypeName(),schema.getTypeMap());

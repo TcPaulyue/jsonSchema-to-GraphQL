@@ -37,7 +37,9 @@ public class MainController {
     public ResponseEntity query(@RequestBody String query){
         ExecutionResult result = graphQL.execute(query);
         logger.info("errors: "+result.getErrors());
-        return ResponseEntity.ok(result.getData());
+        if(result.getErrors().isEmpty())
+            return ResponseEntity.ok(result.getData());
+        else return ResponseEntity.badRequest().body(result.getErrors());
     }
 
 //    @GetMapping(value = "/types")
@@ -49,6 +51,7 @@ public class MainController {
         logger.info("get all schemas.");
         return schemaRepository.findAllByStatus(Status.Created);
     }
+
     @PostMapping("/schemas/new")
     public Schema createSchema(@RequestBody JSONObject params) {
         logger.info("create new Schema.");
@@ -60,6 +63,7 @@ public class MainController {
         this.graphQL = graphQlBuilder.addTypeInGraphQl(schema);
         return schema;
     }
+
     @DeleteMapping("/schemas/{id}")
     public List<Schema> deleteSchema(@PathVariable String id) {
         logger.info("delete schema by id "+id);
