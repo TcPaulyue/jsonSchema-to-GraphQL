@@ -33,6 +33,7 @@ public class MainController {
         this.javers = javers;
     }
 
+    @CrossOrigin
     @PostMapping(value = "documents/query")
     public ResponseEntity query(@RequestBody String query){
         ExecutionResult result = graphQL.execute(query);
