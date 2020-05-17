@@ -4,15 +4,18 @@
   "properties": {
     "a": {
       "x-component": "input",
-      "type": "string"
+      "type": "string",
+      "filter" : true
     },
     "b": {
       "x-component": "input",
-      "type": "string"
+      "type": "string",
+      "filter" : true
     },
     "c": {
       "x-component": "input",
-      "type": "string"
+      "type": "string",
+      "filter" : true
     }
   }
 }
