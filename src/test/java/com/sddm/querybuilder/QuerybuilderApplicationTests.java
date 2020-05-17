@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Lists;
 import com.sddm.querybuilder.domain.Document;
 import com.sddm.querybuilder.domain.Schema;
+import com.sddm.querybuilder.domain.Status;
 import com.sddm.querybuilder.repository.DocumentRepository;
 import com.sddm.querybuilder.repository.SchemaRepository;
 import org.apache.commons.io.IOUtils;
@@ -90,19 +91,19 @@ class QuerybuilderApplicationTests {
 
     @Test
     void testReadJsonFile() throws IOException {
-        InputStream is = new FileInputStream("/Users/congtang/Desktop/sddm-backend/sddm-querybuilder/src/main/resources/order.json");
+        InputStream is = new FileInputStream("/Users/congtang/Desktop/sddm-backend/sddm-querybuilder/src/main/resources/test.json");
         String jsonTxt = IOUtils.toString(is, "UTF-8");
         System.out.println(jsonTxt);
         JSONObject json = JSON.parseObject(jsonTxt);
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("schema",json);
-//        Schema schema = new Schema();
-//        schema.setSchemaContent(jsonObject);
-//        schema.setStatus(Status.Created);
-//        schemaRepository.save(schema);
-        Schema schema = schemaRepository.findById("5df1ed8d7a47184df89fde63").get();
+        Schema schema = new Schema();
         schema.setSchemaContent(jsonObject);
+        schema.setStatus(Status.Created);
         schemaRepository.save(schema);
+//        Schema schema = schemaRepository.findById("5df1ed8d7a47184df89fde63").get();
+//        schema.setSchemaContent(jsonObject);
+//        schemaRepository.save(schema);
     }
 
     //customerid : 5df1f62917e609bb64d920d3

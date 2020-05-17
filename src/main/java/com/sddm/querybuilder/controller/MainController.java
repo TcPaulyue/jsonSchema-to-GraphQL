@@ -64,6 +64,11 @@ public class MainController {
         return schema;
     }
 
+    @GetMapping("/schemas/{schemaId}")
+    public Schema getSchemaWithId(@PathVariable String schemaId){
+        return schemaRepository.findById(schemaId).get();
+    }
+
     @DeleteMapping("/schemas/{id}")
     public List<Schema> deleteSchema(@PathVariable String id) {
         logger.info("delete schema by id "+id);

@@ -1,0 +1,18 @@
+{
+  "type": "object",
+  "description" : "Test",
+  "properties": {
+    "a": {
+      "x-component": "input",
+      "type": "string"
+    },
+    "b": {
+      "x-component": "input",
+      "type": "string"
+    },
+    "c": {
+      "x-component": "input",
+      "type": "string"
+    }
+  }
+}
