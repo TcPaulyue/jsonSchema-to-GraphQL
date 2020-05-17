@@ -1,9 +1,11 @@
 package com.sddm.querybuilder.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.sddm.querybuilder.domain.Fomily;
 import com.sddm.querybuilder.domain.Schema;
 import com.sddm.querybuilder.domain.Status;
 import com.sddm.querybuilder.graphQl.GraphQlBuilder;
+import com.sddm.querybuilder.repository.FomilyRepository;
 import com.sddm.querybuilder.repository.SchemaRepository;
 import graphql.ExecutionResult;
 import graphql.GraphQL;
@@ -24,13 +26,16 @@ public class MainController {
     private SchemaRepository schemaRepository;
     private static final Logger logger = LoggerFactory.getLogger(MainController.class);
     private final Javers javers;
+    private FomilyRepository fomilyRepository;
 
     @Autowired
-    public MainController(GraphQlBuilder graphQlBuilder, SchemaRepository schemaRepository, Javers javers){
+    public MainController(GraphQlBuilder graphQlBuilder, SchemaRepository schemaRepository
+            , Javers javers, FomilyRepository fomilyRepository){
         this.graphQL = graphQlBuilder.createGraphQl();
         this.graphQlBuilder = graphQlBuilder;
         this.schemaRepository = schemaRepository;
         this.javers = javers;
+        this.fomilyRepository = fomilyRepository;
     }
 
     @CrossOrigin
@@ -53,6 +58,14 @@ public class MainController {
         return schemaRepository.findAllByStatus(Status.Created);
     }
 
+    @PostMapping("/fomily/new")
+    public Fomily createFomily(@RequestBody JSONObject params){
+        logger.info("create new Fomily.");
+        Fomily fomily = new Fomily();
+        fomily.setSchemaContent(params);
+        return fomilyRepository.save(fomily);
+    }
+
     @PostMapping("/schemas/new")
     public Schema createSchema(@RequestBody JSONObject params) {
         logger.info("create new Schema.");
@@ -63,6 +76,11 @@ public class MainController {
         javers.commit(schema.getId(),schema);
         this.graphQL = graphQlBuilder.addTypeInGraphQl(schema);
         return schema;
+    }
+
+    @GetMapping("/fomily/{fomilyId}")
+    public Fomily getFomilyWithId(@PathVariable String fomilyId){
+        return fomilyRepository.findById(fomilyId).get();
     }
 
     @GetMapping("/schemas/{schemaId}")
