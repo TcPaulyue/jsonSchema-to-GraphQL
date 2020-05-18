@@ -66,6 +66,17 @@ public class MainController {
         return fomilyRepository.save(fomily);
     }
 
+    @PutMapping("/fomily/{id}")
+    public Fomily updateFomily(@PathVariable String id
+            , @RequestBody JSONObject params) {
+        logger.info("update fomily by Id " + id);
+        fomilyRepository.findById(id).ifPresent(fomily -> {
+            fomily.setSchemaContent(params);
+            fomily = fomilyRepository.save(fomily);
+        });
+        return fomilyRepository.findById(id).get();
+    }
+
     @PostMapping("/schemas/new")
     public Schema createSchema(@RequestBody JSONObject params) {
         logger.info("create new Schema.");
