@@ -91,7 +91,7 @@ class QuerybuilderApplicationTests {
 
     @Test
     void testReadJsonFile() throws IOException {
-        InputStream is = new FileInputStream("/Users/congtang/Desktop/sddm-backend/sddm-querybuilder/src/main/resources/test.json");
+        InputStream is = new FileInputStream("/Users/congtang/Desktop/sddm-backend/sddm-querybuilder/src/main/resources/test2.json");
         String jsonTxt = IOUtils.toString(is, "UTF-8");
         System.out.println(jsonTxt);
         JSONObject json = JSON.parseObject(jsonTxt);
